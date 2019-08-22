@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: Spring Boot Web File Converter
+Implementation-Version: 1.0
+Built-By: srbachu
+Implementation-Vendor-Id: org.springframework.boot
+Build-Jdk: 1.8.0_191
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/Converter
+Created-By: Maven Integration for Eclipse
+
