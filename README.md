@@ -3,10 +3,10 @@ This app is used to comvert .ai files to .svg files with user interface .
 
 Article link : https://github.com/sreedharrao225/AI2SVGConverter
 ```
-#Prerequists
+#Prerequisites
 install mvn
 install git
-Add below env variables for App(below env variables are optional)
+Add below system environment variables for App(below env variables are optional)
 1)API_KEY (api key from cloudconverter)
 2)FILE_STORAGE_PATH (path where you wanted to temp store the source file ,files get deleted once processed)
 3)FILE_STORAGE_OUTPUT_PATH(output path for converted files where files get store on yuor disk)
