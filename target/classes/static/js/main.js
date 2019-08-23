@@ -28,8 +28,9 @@ $('#singleUploadForm').submit(function(event) {
             
         },
         error: function (error) {
-            console.log(error);
-            $('#progress').text(data);
+            console.log(error.responseJSON);
+            $('#progress').text(error.responseJSON.status+' : '+error.responseJSON.message);
+            $('#progress').addClass('error');
         }
     });
 

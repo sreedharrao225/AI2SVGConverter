@@ -65,7 +65,7 @@ public class CloudConverterController {
 			if(path==null || path.isEmpty()) {
 				path=File.separator+"tmp"+File.separator;
 			}
-			path=path+file.getOriginalFilename().replace(".ai", "");
+			path=path+file.getOriginalFilename().toLowerCase().replace(".ai", "");
 			System.out.println("@@@file name is "+path);
 			fileToSave=new File(path+"_output.svg");
 			fileToSave.createNewFile();
@@ -143,6 +143,7 @@ public class CloudConverterController {
 		}catch(Exception e) {
 			System.out.println("###Error processing request..");
 			e.printStackTrace();
+			throw e;
 		}
 	}
 
