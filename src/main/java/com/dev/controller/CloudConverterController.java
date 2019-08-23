@@ -1,14 +1,11 @@
 package com.dev.controller;
 
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.net.URLConnection;
-import java.util.Arrays;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,27 +13,28 @@ import javax.servlet.http.HttpServletResponse;
 import org.aioobe.cloudconvert.CloudConvertService;
 import org.aioobe.cloudconvert.ConvertProcess;
 import org.aioobe.cloudconvert.ProcessStatus;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-public class WelcomeController {
+public class CloudConverterController {
 
 
 
-	@GetMapping("/hello")
+	@GetMapping("/")
 	public String mainWithParam(
 			@RequestParam(name = "name", required = false, defaultValue = "") String name, Model model) {
 
 		model.addAttribute("message", name);
 
-		return "welcome"; //view
+		return "index"; //view
 	}
 
 	private String getFileStoragepath() {
@@ -69,7 +67,7 @@ public class WelcomeController {
 			}
 			path=path+file.getOriginalFilename().replace(".ai", "");
 			System.out.println("@@@file name is "+path);
-			fileToSave=new File(path+".svg");
+			fileToSave=new File(path+"_output.svg");
 			fileToSave.createNewFile();
 		}catch(Exception e) {
 			System.out.println("Error while loadig file "+e.getMessage());
@@ -92,7 +90,9 @@ public class WelcomeController {
 		return fileToSave;
 	}
 
-	@PostMapping("/convert") //ResponseEntity<Resource>
+	@PostMapping("/convert") 
+	@ResponseStatus(value=HttpStatus.OK)
+    @ResponseBody
 	public  void convert( @RequestParam("file") MultipartFile file, HttpServletRequest request,HttpServletResponse response) throws Exception {
 
 		try {
@@ -134,23 +134,14 @@ public class WelcomeController {
 				if (mimeType == null) {
 					mimeType = "application/octet-stream";
 				}
-
-				response.setContentType(mimeType);
-
-				response.setHeader("Content-Disposition", String.format("inline; filename=\"" + outputFile.getName() + "\""));
-
-				response.setContentLength((int) outputFile.length());
-
-				InputStream inputStream = new BufferedInputStream(new FileInputStream(outputFile));
-
-				FileCopyUtils.copy(inputStream, response.getOutputStream());
+				System.out.println("get filename ::"+outputFile.getName());
+				response.setHeader("Content-Disposition", "attachment; filename=\"" + outputFile.getName());
+		        response.getOutputStream().write(Files.readAllBytes(Paths.get(outputFile.getAbsolutePath())));
+		        response.flushBuffer();
+				
 			}
-
-			/*return ResponseEntity.ok()
-	                .contentType(MediaType.parseMediaType("application/octet-stream"))
-	                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-	                .body(resource);*/
 		}catch(Exception e) {
+			System.out.println("###Error processing request..");
 			e.printStackTrace();
 		}
 	}

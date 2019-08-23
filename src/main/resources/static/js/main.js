@@ -7,7 +7,8 @@ var singleFileUploadSuccess = document.querySelector('#singleFileUploadSuccess')
 $('#singleUploadForm').submit(function(event) {
     var formElement = this;
     var formData = new FormData(formElement);
-
+    var fileName=$('#singleFileUploadInput')[0].files[0].name.replace('.ai','.svg');
+    $('#progress').show();
     $.ajax({
         type: "POST",
         enctype: 'multipart/form-data',
@@ -15,18 +16,20 @@ $('#singleUploadForm').submit(function(event) {
         data: formData,
         processData: false,
         contentType: false,
-        success: function (req) {
-            console.log(req);
-            var blob = req;
-            var fileName = req.getResponseHeader("fileName") //if you have the fileName header available
-            var link=document.createElement('a');
-            link.href=window.URL.createObjectURL(blob);
-            link.download=fileName;
+        success: function (data) {
+        	$('#progress').hide();
+            console.log(data);
+            const url = window.URL.createObjectURL(new Blob([data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', fileName);
+            document.body.appendChild(link);
             link.click();
+            
         },
         error: function (error) {
             console.log(error);
-            // process error
+            $('#progress').text(data);
         }
     });
 
