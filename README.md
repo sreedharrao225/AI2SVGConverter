@@ -1,5 +1,5 @@
 # Spring Boot AI to SVG COnverter
-This app is used to comvert .ai files to .svg files with user interface .
+This app is used to convert .ai files to .svg files with user interface .
 
 Article link : https://github.com/sreedharrao225/AI2SVGConverter
 ```
