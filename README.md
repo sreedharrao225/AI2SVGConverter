@@ -22,3 +22,7 @@ Application will start after above cmd and you can access home page at http://lo
 browse .ai file and click on convert to process and download the .svg file 
 
 ```
+
+Home page looks like below
+
+![image](https://user-images.githubusercontent.com/29558315/63591665-6950d600-c57d-11e9-9c9d-5579d4441352.png)
